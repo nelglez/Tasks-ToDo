@@ -8,9 +8,27 @@
 
 import UIKit
 import ChameleonFramework
-import SwipeCellKit
+import CoreData
 
-class TasksTableViewController: UITableViewController, SwipeTableViewCellDelegate {
+class TasksTableViewController: UITableViewController {
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<Task> = {
+        let fetchedRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        
+        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "priority", ascending: true)]
+        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        let moc = CoreDataStack.shared.mainContext
+        
+        let fetchedResultController = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: moc, sectionNameKeyPath: "priority", cacheName: nil)
+        
+        fetchedResultController.delegate = self
+        
+        try! fetchedResultController.performFetch()
+        
+        return fetchedResultController
+        
+    }()
     
     var todoController: ToDoController?
     var todos: Todo? {
@@ -25,6 +43,8 @@ class TasksTableViewController: UITableViewController, SwipeTableViewCellDelegat
         super.viewDidLoad()
         customizeTable()
         tableView.allowsSelection = false
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,87 +83,67 @@ class TasksTableViewController: UITableViewController, SwipeTableViewCellDelegat
     }
 
     // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return fetchedResultsController.sections?.count ?? 1
+    }
 
   
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return todos?.task?.count ?? 0
+       
+        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksCell", for: indexPath) as! TasksTableViewCell
 
-        if let todos = todos, let tasks = todos.task?.object(at: indexPath.row) as? Task {
+      //  if let todos = todos, let tasks = todos.task?.object(at: indexPath.row) as? Task {
+        guard let todos = todos else {return cell}
+           let tasks = fetchedResultsController.object(at: indexPath)
             
             cell.task = tasks
             cell.todoController = todoController
-            cell.delegate = self
+          
           
             
             if let color = UIColor(hexString: todos.color)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat((todos.task?.count)!)) {
                
                 cell.backgroundColor = color
                 cell.tasksTitleLabel.textColor = ContrastColorOf(backgroundColor: color, returnFlat: true)
-              
-            }
-            
-          //   cell.accessoryType = tasks.isDone ? .checkmark : .none
 
         }
 
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let action =  UIContextualAction(style: .normal, title: "", handler: { (action,view,completionHandler ) in
+            //do stuff
+            let tasks = self.fetchedResultsController.object(at: indexPath)
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//        guard let todos = todos, let tasks = todos.task?.object(at: indexPath.row) as? Task else {return}
-//
-//        if tasks.isDone == false {
-//            tasks.isDone = true
-//            todoController?.updateTasksDone(task: tasks, done: true)
-//
-//        } else {
-//            tasks.isDone = false
-//            todoController?.updateTasksDone(task: tasks, done: false)
-//
-//        }
-//
-//        tableView.reloadData()
-//
-//        tableView.deselectRow(at: indexPath, animated: true)
-//    }
-    
-   
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else {
-            return nil
-        }
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            
-            print("Delete cell")
-            
-           // let todo = self.todoController?.todoList[indexPath.row]
-            guard let  todos = self.todos, let tasks = todos.task?.object(at: indexPath.row) as? Task else {return}
-            
-            
             self.todoController?.delete(task: tasks)
-            
-            
-        }
+            completionHandler(true)
+        })
+        action.image = UIImage(named: "delete-icon")
+        action.title = "Delete"
+        action.backgroundColor = .red
+        let confrigation = UISwipeActionsConfiguration(actions: [action])
         
-        deleteAction.image = UIImage(named: "delete-icon")
-        return [deleteAction]
+        return confrigation
     }
+
     
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
-        var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return options
+        guard let sectionInfo = fetchedResultsController.sections?[section] else {return nil}
+        
+        return sectionInfo.name.capitalized
+        
     }
-    
+
 
     
     // MARK: - Navigation
@@ -160,4 +160,52 @@ class TasksTableViewController: UITableViewController, SwipeTableViewCellDelegat
     }
    
 
+}
+
+extension TasksTableViewController: NSFetchedResultsControllerDelegate {
+    
+    //MARK: - NSFetchResultControllerDelegate
+    
+    //Tell the table view that were going to update
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    //tell the table were done updating
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    //a single task
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        case .move:
+            guard let oldIndexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            //            tableView.deleteRows(at: [oldIndexPath], with: .automatic)
+            //            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            tableView.moveRow(at: oldIndexPath, to: newIndexPath)
+        case .update:
+            guard let indexPath = indexPath else {return}
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+    }
+    //section related updates
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
+        default:
+            break
+        }
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 import ChameleonFramework
 import SwipeCellKit
 
-class TasksTableViewCell: SwipeTableViewCell {
+class TasksTableViewCell: UITableViewCell {
     
     @IBOutlet weak var tasksTitleLabel: UILabel!
 
