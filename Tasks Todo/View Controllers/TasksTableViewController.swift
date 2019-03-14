@@ -22,7 +22,7 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
         }
         
         fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "priority", ascending: true)]
-        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         let moc = CoreDataStack.shared.mainContext
         
