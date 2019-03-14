@@ -5,16 +5,16 @@
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="priority" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="todo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Todo" inverseName="task" inverseEntity="Todo" syncable="YES"/>
+        <relationship name="todo" maxCount="1" deletionRule="Nullify" destinationEntity="Todo" inverseName="task" inverseEntity="Todo" syncable="YES"/>
     </entity>
     <entity name="Todo" representedClassName="Todo" syncable="YES" codeGenerationType="class">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="task" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Task" inverseName="todo" inverseEntity="Task" syncable="YES"/>
+        <relationship name="task" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Task" inverseName="todo" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Task" positionX="-36" positionY="9" width="128" height="120"/>
+        <element name="Task" positionX="-36" positionY="9" width="128" height="118"/>
         <element name="Todo" positionX="-290.4453125" positionY="-33.453125" width="128" height="103"/>
     </elements>
 </model>

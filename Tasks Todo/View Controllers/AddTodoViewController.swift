@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddTodoViewController: UIViewController {
+class AddTodoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var todoTitleLabel: UITextField!
     @IBOutlet weak var addButton: UIButton!
     
@@ -18,7 +18,16 @@ class AddTodoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        todoTitleLabel.delegate = self
         
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 
@@ -30,8 +39,7 @@ class AddTodoViewController: UIViewController {
         
         NotificationCenter.default.post(name: .todoWasAdded, object: self)
         
-      //  navigationController?.popViewController(animated: true)
-        
+        todoTitleLabel.resignFirstResponder()
     }
     
 

@@ -24,13 +24,13 @@ class TasksTableViewCell: UITableViewCell {
             updateViews()
         }
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
-
+    
+   
     func updateViews() {
         guard let task = task else {return}
         tasksTitleLabel.text = task.title

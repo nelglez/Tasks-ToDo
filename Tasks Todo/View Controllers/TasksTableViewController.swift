@@ -10,13 +10,19 @@ import UIKit
 import ChameleonFramework
 import CoreData
 
-class TasksTableViewController: UITableViewController {
+class TasksTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
     lazy var fetchedResultsController: NSFetchedResultsController<Task> = {
         let fetchedRequest: NSFetchRequest<Task> = Task.fetchRequest()
         
+        if let todo = todos {
+            let predicate = NSPredicate(format: "todo == %@", todo)
+            
+            fetchedRequest.predicate = predicate
+        }
+        
         fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "priority", ascending: true)]
-        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
         let moc = CoreDataStack.shared.mainContext
         
@@ -85,24 +91,27 @@ class TasksTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
+
         return fetchedResultsController.sections?.count ?? 1
+
     }
 
   
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksCell", for: indexPath) as! TasksTableViewCell
 
-      //  if let todos = todos, let tasks = todos.task?.object(at: indexPath.row) as? Task {
+    
         guard let todos = todos else {return cell}
+    
            let tasks = fetchedResultsController.object(at: indexPath)
-            
+   
             cell.task = tasks
             cell.todoController = todoController
           
@@ -144,7 +153,11 @@ class TasksTableViewController: UITableViewController {
         
     }
 
-
+    // MARK: - UIPopoverPresentationControllerDelegate
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
     
     // MARK: - Navigation
 
@@ -152,12 +165,26 @@ class TasksTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "toAddVC" {
-            let destinationVC = segue.destination as? AddTasksViewController
-            destinationVC?.toDoController = todoController
-            destinationVC?.todo = todos
+            let detailVC = segue.destination as? AddTasksViewController
+//            destinationVC?.toDoController = todoController
+//            destinationVC?.todo = todos
+            let ppc = detailVC?.popoverPresentationController
+            if let button = sender as? UIButton {
+                ppc?.sourceView = button
+                ppc?.sourceRect = button.bounds
+                ppc?.backgroundColor = .black
+            }
+            detailVC?.toDoController = todoController
+            detailVC?.todo = todos
+            ppc?.delegate = self
         }
        
     }
+    
+    @IBAction func unwindToTasksTableViewController(_ sender: UIStoryboardSegue) {
+        tableView.reloadData()
+    }
+    
    
 
 }

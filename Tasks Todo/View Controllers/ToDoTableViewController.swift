@@ -10,8 +10,9 @@ import UIKit
 import SwipeCellKit
 import ChameleonFramework
 
-class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate {
+class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate, UIPopoverPresentationControllerDelegate {
     
+    @IBOutlet var popOverView: UIView!
     
     
     let todoController = ToDoController()
@@ -21,14 +22,13 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
 
         customizeTable()
       
+        NotificationCenter.default.addObserver(self, selector: #selector(newTodoAdded(_:)), name: .todoWasAdded, object: nil)
+        
     }
     
-    
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(newTodoAdded(_:)), name: .todoWasAdded, object: nil)
-          
+       
     }
     
     @objc func newTodoAdded(_ notification: Notification) {
@@ -62,19 +62,6 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
         return cell
     }
    
-
-  
-    // Override to support editing the table view.
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            
-//            let todo = todoController.todoList[indexPath.row]
-//            
-//            todoController.delete(todo: todo)
-//            
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-//    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else {
@@ -101,25 +88,39 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
         
         return options
     }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
    
     
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPopover" {
-            let destinationVC = segue.destination as? AddTodoViewController
-            destinationVC?.todoController = todoController
+            let detailVC = segue.destination as? AddTodoViewController
+            let ppc = detailVC?.popoverPresentationController
+            if let button = sender as? UIButton {
+                ppc?.sourceView = button
+                ppc?.sourceRect = button.bounds
+                ppc?.backgroundColor = .black
+            }
+            detailVC?.todoController = todoController
+            ppc?.delegate = self
         } else if segue.identifier == "toToDoVC" {
             let destinationVC = segue.destination as? TasksTableViewController
             destinationVC?.todoController = todoController
             guard let index = tableView.indexPathForSelectedRow else {return}
             let todos = todoController.todoList[index.row]
             destinationVC?.todos = todos
-        }
+        } 
     }
     
     @IBAction func unwindToTodoTableViewController(_ sender: UIStoryboardSegue) {
+    tableView.reloadData()
     }
     
-
+    
 }

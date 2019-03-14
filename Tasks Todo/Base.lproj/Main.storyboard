@@ -49,7 +49,9 @@
                     <navigationItem key="navigationItem" title="ToDo List" id="f9z-9t-WC9">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Y3j-X6-L4F">
                             <connections>
-                                <segue destination="xSp-c3-9Hr" kind="show" identifier="showPopover" id="k1x-BV-L1d"/>
+                                <segue destination="xSp-c3-9Hr" kind="popoverPresentation" identifier="showPopover" popoverAnchorBarButtonItem="Y3j-X6-L4F" id="aeL-iz-Qrr">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -63,17 +65,17 @@
             <objects>
                 <viewController id="xSp-c3-9Hr" customClass="AddTodoViewController" customModule="Tasks_Todo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FUO-ss-BDx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ToDo Item:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f8M-rZ-8U6">
-                                <rect key="frame" x="16" y="201" width="382" height="30"/>
+                                <rect key="frame" x="16" y="105" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jy9-vK-63Y">
-                                <rect key="frame" x="360" y="148" width="30" height="30"/>
+                                <rect key="frame" x="321" y="52" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="2pU-ji-cpW"/>
                                 </constraints>
@@ -84,7 +86,6 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="jy9-vK-63Y" firstAttribute="top" secondItem="gsk-jO-WfY" secondAttribute="top" constant="8" id="AXK-EF-iOS"/>
                             <constraint firstItem="gsk-jO-WfY" firstAttribute="trailing" secondItem="f8M-rZ-8U6" secondAttribute="trailing" constant="16" id="BIh-UH-eVe"/>
@@ -95,6 +96,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gsk-jO-WfY"/>
                     </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="250"/>
+                    <size key="freeformSize" width="375" height="250"/>
                     <connections>
                         <outlet property="addButton" destination="jy9-vK-63Y" id="hal-OI-xgD"/>
                         <outlet property="todoTitleLabel" destination="f8M-rZ-8U6" id="247-Ib-whL"/>
@@ -165,7 +168,9 @@
                     <navigationItem key="navigationItem" title="Tasks" id="CJG-FL-hbW">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="2O9-Sa-hVp">
                             <connections>
-                                <segue destination="zPy-dC-Kx6" kind="show" identifier="toAddVC" id="68E-09-q8t"/>
+                                <segue destination="zPy-dC-Kx6" kind="popoverPresentation" identifier="toAddVC" popoverAnchorBarButtonItem="2O9-Sa-hVp" id="68E-09-q8t">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -191,19 +196,19 @@
             </objects>
             <point key="canvasLocation" x="-695" y="130"/>
         </scene>
-        <!--Add Tasks View Controller-->
+        <!--Add A Task-->
         <scene sceneID="Iiw-M1-jTm">
             <objects>
                 <viewController id="zPy-dC-Kx6" customClass="AddTasksViewController" customModule="Tasks_Todo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RCh-0y-9bd">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="F4c-wA-nE1">
-                                <rect key="frame" x="20" y="160" width="374" height="104"/>
+                                <rect key="frame" x="20" y="64" width="335" height="104"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="5aR-IS-jPp">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="28"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="28"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Priority:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ff7-t8-9Qg">
                                                 <rect key="frame" x="0.0" y="0.0" width="59.5" height="28"/>
@@ -212,7 +217,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UNO-h7-ibC">
-                                                <rect key="frame" x="67.5" y="0.0" width="306.5" height="29"/>
+                                                <rect key="frame" x="67.5" y="0.0" width="267.5" height="29"/>
                                                 <segments>
                                                     <segment title="Low"/>
                                                     <segment title="Normal"/>
@@ -223,25 +228,25 @@
                                         </subviews>
                                     </stackView>
                                     <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Title:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wso-bp-dJK">
-                                        <rect key="frame" x="0.0" y="36" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="36" width="335" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RAv-E2-maT">
-                                        <rect key="frame" x="0.0" y="74" width="374" height="30"/>
+                                        <rect key="frame" x="0.0" y="74" width="335" height="30"/>
                                         <color key="backgroundColor" red="0.20740374919999999" green="0.47127211089999999" blue="0.96475607159999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Add">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="addButtonPressed:" destination="zPy-dC-Kx6" eventType="touchUpInside" id="MyH-72-FEA"/>
+                                            <segue destination="5xe-8a-Mpm" kind="unwind" unwindAction="unwindToTasksTableViewController:" id="wFf-pM-J8X"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="qMw-PI-Fgq" firstAttribute="trailing" secondItem="F4c-wA-nE1" secondAttribute="trailing" constant="20" id="E9L-iW-8zP"/>
                             <constraint firstItem="F4c-wA-nE1" firstAttribute="top" secondItem="qMw-PI-Fgq" secondAttribute="top" constant="20" id="hpi-Ke-CiT"/>
@@ -249,6 +254,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qMw-PI-Fgq"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Add A Task" id="ijJ-Oy-pfo"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="200"/>
+                    <size key="freeformSize" width="375" height="200"/>
                     <connections>
                         <outlet property="addButton" destination="RAv-E2-maT" id="hco-Xx-Fi1"/>
                         <outlet property="prioritySegementedControl" destination="UNO-h7-ibC" id="zNR-UB-J3m"/>
@@ -256,6 +264,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UUW-Wz-t5B" sceneMemberID="firstResponder"/>
+                <exit id="5xe-8a-Mpm" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2026" y="-118"/>
         </scene>

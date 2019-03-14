@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddTasksViewController: UIViewController {
+class AddTasksViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var prioritySegementedControl: UISegmentedControl!
     @IBOutlet weak var tasksTitleTextField: UITextField!
@@ -24,7 +24,16 @@ class AddTasksViewController: UIViewController {
 
         
         prioritySegementedControl.selectedSegmentIndex = index
+        tasksTitleTextField.delegate = self
      
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
 
@@ -48,7 +57,7 @@ class AddTasksViewController: UIViewController {
   
             toDoController?.create(taskWith: title, priority: priority, todo: todo)
    
-        navigationController?.popViewController(animated: true)
+            tasksTitleTextField.resignFirstResponder()
     }
     
 }

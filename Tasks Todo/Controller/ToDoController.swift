@@ -17,7 +17,6 @@ class ToDoController {
         let request: NSFetchRequest<Todo> = Todo.fetchRequest()
         return (try? CoreDataStack.shared.mainContext.fetch(request)) ?? []
     }
-
     
     //MARK: - CRUD Todo
     
