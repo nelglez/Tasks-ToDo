@@ -24,7 +24,7 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
       
         NotificationCenter.default.addObserver(self, selector: #selector(newTodoAdded(_:)), name: .todoWasAdded, object: nil)
         
-         updateNavBar(withHexCode: "C6C2FF")
+        
     }
     
     func updateNavBar(withHexCode colorHexCode: String){
@@ -42,7 +42,7 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-       
+       updateNavBar(withHexCode: "C6C2FF")
     }
     
     @objc func newTodoAdded(_ notification: Notification) {
