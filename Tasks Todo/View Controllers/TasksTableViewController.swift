@@ -61,12 +61,14 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
         updateNavBar(withHexCode: colorHex)
     }
     
-   
-    
-    override func viewWillDisappear(_ animated: Bool) {
-
-        updateNavBar(withHexCode: "C6C2FF")
+    override func willMove(toParent parent: UIViewController?) {
+        if parent == nil {
+           // navigationController?.navigationBar.barTintColor = .red
+            updateNavBar(withHexCode: "C6C2FF")
+        }
+        super.willMove(toParent: parent)
     }
+   
 
     //MARK: - NavBar Setup Methods
     func updateNavBar(withHexCode colorHexCode: String){
