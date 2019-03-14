@@ -24,6 +24,20 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
       
         NotificationCenter.default.addObserver(self, selector: #selector(newTodoAdded(_:)), name: .todoWasAdded, object: nil)
         
+         updateNavBar(withHexCode: "C6C2FF")
+    }
+    
+    func updateNavBar(withHexCode colorHexCode: String){
+        guard let navBar = navigationController?.navigationBar else {
+            fatalError("Navigation controller does not exist!")
+        }
+        
+        guard let navBarColor = UIColor(hexString: colorHexCode) else { fatalError()}
+        navBar.barTintColor =  navBarColor
+        navBar.tintColor = ContrastColorOf(backgroundColor: navBarColor, returnFlat: true)
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(backgroundColor: navBarColor, returnFlat: true)]
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
