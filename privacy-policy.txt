@@ -1,0 +1,11 @@
+Privacy Policy
+
+Data we collect
+----------------
+This app stores user generated data locally on your device. We do NOT store or collect any data from any user unless voluntarily sent to us for debugging purposes.
+
+Contacting Us
+----------------
+For any questions, suggestions, or any other queries please email the developer at: nelglezfl@gmail.com
+
+We will generally reply as soon as we are online.
