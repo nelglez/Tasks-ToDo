@@ -15,6 +15,8 @@ class ToDoController {
     var todoList: [Todo] {
         
         let request: NSFetchRequest<Todo> = Todo.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sortDescriptor]
         return (try? CoreDataStack.shared.mainContext.fetch(request)) ?? []
     }
     
