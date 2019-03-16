@@ -137,4 +137,31 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
     }
     
     
+    @IBAction func shareAppBarButtonPressed(_ sender: UIBarButtonItem) {
+        //https://stackoverflow.com/questions/37938722/how-to-implement-share-button-in-swift
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.layer.render(in: UIGraphicsGetCurrentContext()!)
+     
+        let image = #imageLiteral(resourceName: "todo-list copy")
+        
+        let textToShare = "Check out this app"
+        
+        if let myWebsite = URL(string: "http://itunes.apple.com/us/app/task-todo-lists/id1456267861") {
+            let objectsToShare = [textToShare, myWebsite, image] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            //Excluded Activities
+            activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.addToReadingList]
+           
+            self.present(activityVC, animated: true, completion: nil)
+            //https://medium.com/@dushyant_db/how-to-present-uiactivityviewcontroller-on-iphone-and-ipad-ae72013d2a5a
+            if let popOver = activityVC.popoverPresentationController {
+                popOver.sourceView = self.view
+                popOver.barButtonItem = sender
+            }
+        }
+    }
+    
+    
+    
 }
