@@ -2,7 +2,7 @@ PODS:
   - ChameleonFramework/Default (2.1.0)
   - ChameleonFramework/Swift (2.1.0):
     - ChameleonFramework/Default
-  - SwipeCellKit (2.5.1)
+  - SwipeCellKit (2.5.4)
 
 DEPENDENCIES:
   - ChameleonFramework/Swift
@@ -15,7 +15,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
-  SwipeCellKit: 30fd6a4f8a8b8ac864ea389c8b4c8bac5ba5471a
+  SwipeCellKit: 4eada3884ab1bbae5e8d2fb9030c242aa23d7f42
 
 PODFILE CHECKSUM: 6db666e4b7251da6f4021b1a36391f27277e7119
 

@@ -39,11 +39,11 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
     var todoController: ToDoController?
     var todos: Todo? {
         didSet {
-            print("Todos found")
             tableView.reloadData()
         }
     }
     
+    var task: Task?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,13 +138,26 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
             self.todoController?.delete(task: tasks)
             completionHandler(true)
         })
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, success:(Bool) -> Void) in
+          
+            self.task = self.fetchedResultsController.object(at: indexPath)
+            
+            self.performSegue(withIdentifier: "toEditTasksVC", sender: self)
+        }
+        
         action.image = UIImage(named: "delete-icon")
         action.title = "Delete"
         action.backgroundColor = .red
-        let confrigation = UISwipeActionsConfiguration(actions: [action])
+        
+        editAction.backgroundColor = .blue
+        
+        let confrigation = UISwipeActionsConfiguration(actions: [action, editAction])
         
         return confrigation
     }
+    
+    
 
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -168,8 +181,6 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
         
         if segue.identifier == "toAddVC" {
             let detailVC = segue.destination as? AddTasksViewController
-//            destinationVC?.toDoController = todoController
-//            destinationVC?.todo = todos
             let ppc = detailVC?.popoverPresentationController
             if let button = sender as? UIButton {
                 ppc?.sourceView = button
@@ -179,6 +190,11 @@ class TasksTableViewController: UITableViewController, UIPopoverPresentationCont
             detailVC?.toDoController = todoController
             detailVC?.todo = todos
             ppc?.delegate = self
+        } else if segue.identifier == "toEditTasksVC" {
+            let destinationVC = segue.destination as? EditTaskViewController
+            destinationVC?.todoController = todoController
+            destinationVC?.task = task
+            destinationVC?.todo = todos
         }
        
     }
@@ -222,6 +238,8 @@ extension TasksTableViewController: NSFetchedResultsControllerDelegate {
         case .update:
             guard let indexPath = indexPath else {return}
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            fatalError("Fatal Error with NSFetchedResultsController")
         }
         
     }

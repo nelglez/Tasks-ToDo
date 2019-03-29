@@ -27,6 +27,11 @@ class ToDoController {
         saveToPersistentStore()
     }
     
+    func updateTodoTitle(todo: Todo, title: String) {
+        todo.title = title
+        saveToPersistentStore()
+    }
+    
     func delete(todo: Todo) {
         if let moc = todo.managedObjectContext {
             moc.delete(todo)
@@ -48,9 +53,15 @@ class ToDoController {
         }
     }
     
+    
+    
     func updateTasksDone(task: Task, done: Bool){
         task.isDone = done
-        
+        saveToPersistentStore()
+    }
+    
+    func updateTaskTitle(task: Task, title: String) {
+        task.title = title
         saveToPersistentStore()
     }
 

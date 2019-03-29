@@ -16,6 +16,8 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
     
     
     let todoController = ToDoController()
+    
+    var todo: Todo?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,7 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
        updateNavBar(withHexCode: "C6C2FF")
+        tableView.reloadData()
     }
     
     @objc func newTodoAdded(_ notification: Notification) {
@@ -82,18 +85,25 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
             return nil
         }
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            
-            print("Delete cell")
-            
+           
             let todo = self.todoController.todoList[indexPath.row]
             
             self.todoController.delete(todo: todo)
             
-            
         }
         
+        let editAction = SwipeAction(style: .default, title: "Edit") { (action, indexPath) in
+            print("edit cell")
+            
+            let todo = self.todoController.todoList[indexPath.row]
+            self.todo = todo
+            
+            self.performSegue(withIdentifier: "toEditVC", sender: self)
+            
+        }
+        editAction.backgroundColor = .blue
         deleteAction.image = UIImage(named: "delete-icon")
-        return [deleteAction]
+        return [deleteAction, editAction]
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
@@ -129,7 +139,11 @@ class ToDoTableViewController: UITableViewController, SwipeTableViewCellDelegate
             guard let index = tableView.indexPathForSelectedRow else {return}
             let todos = todoController.todoList[index.row]
             destinationVC?.todos = todos
-        } 
+        } else if segue.identifier == "toEditVC" {
+            let destinationVC = segue.destination as? EditViewController
+            destinationVC?.todoController = todoController
+            destinationVC?.todo = todo
+        }
     }
     
     @IBAction func unwindToTodoTableViewController(_ sender: UIStoryboardSegue) {

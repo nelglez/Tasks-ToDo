@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pyc-c0-EbN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pyc-c0-EbN">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -60,10 +60,105 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Ldc-0i-Nkh" kind="show" identifier="toEditVC" id="7oj-b9-j2b"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="335-qa-zVY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-27.536231884057973" y="129.91071428571428"/>
+        </scene>
+        <!--Edit-->
+        <scene sceneID="hfV-jD-j0c">
+            <objects>
+                <viewController id="Ldc-0i-Nkh" customClass="EditViewController" customModule="Tasks_Todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EB2-gR-VAm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="9Oc-bG-QBQ">
+                                <rect key="frame" x="20" y="168" width="374" height="64"/>
+                                <color key="backgroundColor" white="0.95658533105022814" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="zCR-Kx-fWY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93656103183389539" green="0.94310057174706519" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="9Oc-bG-QBQ" firstAttribute="top" secondItem="2d1-h3-tlE" secondAttribute="top" constant="28" id="1JO-hw-td6"/>
+                            <constraint firstItem="9Oc-bG-QBQ" firstAttribute="leading" secondItem="2d1-h3-tlE" secondAttribute="leading" constant="20" id="IZe-OJ-xbp"/>
+                            <constraint firstItem="2d1-h3-tlE" firstAttribute="trailing" secondItem="9Oc-bG-QBQ" secondAttribute="trailing" constant="20" id="pLW-bg-4d7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="2d1-h3-tlE"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit" id="txZ-Md-IsN">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="du7-sc-jRr">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="Ldc-0i-Nkh" id="hG3-fO-Ymq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="textField" destination="9Oc-bG-QBQ" id="6tf-kZ-RBA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nwH-pP-RnX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-30.434782608695656" y="-512.27678571428567"/>
+        </scene>
+        <!--Edit-->
+        <scene sceneID="FKg-Jk-lUk">
+            <objects>
+                <viewController id="o8x-yf-L8D" customClass="EditTaskViewController" customModule="Tasks_Todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QrC-fW-nrQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pkk-SX-X2N">
+                                <rect key="frame" x="20" y="168" width="374" height="64"/>
+                                <color key="backgroundColor" white="0.95658533109999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="u6o-Gx-klf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.94117647058823528" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="PDk-C4-zAp" firstAttribute="trailing" secondItem="pkk-SX-X2N" secondAttribute="trailing" constant="20" id="Vjx-it-S3d"/>
+                            <constraint firstItem="pkk-SX-X2N" firstAttribute="leading" secondItem="PDk-C4-zAp" secondAttribute="leading" constant="20" id="nmi-dB-au1"/>
+                            <constraint firstItem="pkk-SX-X2N" firstAttribute="top" secondItem="PDk-C4-zAp" secondAttribute="top" constant="28" id="yHK-wC-PQt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PDk-C4-zAp"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit" id="7c8-VG-1Fa">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="wAq-wI-Pxm">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="o8x-yf-L8D" id="IZP-83-wHA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="textField" destination="pkk-SX-X2N" id="lXh-kN-s4c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Trd-ov-gHQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1268" y="-510"/>
         </scene>
         <!--Add Todo View Controller-->
         <scene sceneID="JUT-JD-yA5">
@@ -162,6 +257,7 @@
                                 <connections>
                                     <outlet property="doneButton" destination="Y2N-yc-Jad" id="lBz-Ei-dVD"/>
                                     <outlet property="tasksTitleLabel" destination="sVL-ay-KoV" id="QrA-C7-L40"/>
+                                    <segue destination="o8x-yf-L8D" kind="show" identifier="toEditTasksVC" id="oJu-ye-W32"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -275,6 +371,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="unchecked" width="75" height="75"/>
+        <image name="unchecked" width="37.5" height="37.5"/>
     </resources>
 </document>
